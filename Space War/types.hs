@@ -1,14 +1,14 @@
 module Types(
-    GameAttribute(GA),
-    GameState(LevelStart, Level, GameOver),
-    SpaceWarObject,
-    SpaceWarAction
+    GameAttribute(Score),
+    GameState(Level),
+    SIObject,
+    SIAction
 ) where
 
 import Graphics.UI.Fungen
 
-data GameAttribute = GA Int Int Bool
-data GameState = LevelStart Int | Level Int | GameOver
+data GameAttribute = Score Int
+data GameState = Level Int
 
-type SpaceWarObject = GameObject ()
-type SpaceWarAction a = IOGame GameAttribute () GameState () a
+type SIObject = GameObject ()
+type SIAction a = IOGame GameAttribute () () () a

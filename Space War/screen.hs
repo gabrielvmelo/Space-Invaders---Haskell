@@ -1,25 +1,29 @@
 module Screen(
-    windowResolution,
-    middleScreen,
     width,
-    height
+    height,
+    screenSize,
+    widthGL,
+    heightGL,
+    middle
 ) where
 
-import Graphics.UI.Fungen
 import Graphics.Rendering.OpenGL (GLdouble)
-import Textures
-import Types
+import Graphics.UI.Fungen
 
-windowResolution :: (Int, Int)
-windowResolution = (800, 800)
+width :: Int
+width = 345
 
-width :: GLdouble
-width = fromIntegral (fst windowResolution) :: GLdouble
---width = fst windowResolution
+height :: Int
+height = 600
 
-height :: GLdouble
-height = fromIntegral (snd windowResolution) :: GLdouble
---height = snd windowResolution
+screenSize :: (Int, Int)
+screenSize = (width, height)
 
-middleScreen :: (Double, Double)
-middleScreen = (fromIntegral ((fst windowResolution) `div` 2), fromIntegral ((snd windowResolution) `div` 2))
+widthGL :: GLdouble
+widthGL = fromIntegral width :: GLdouble
+
+heightGL :: GLdouble
+heightGL = fromIntegral height :: GLdouble
+
+middle :: (Double, Double)
+middle = (fromIntegral (width `div` 2), fromIntegral (height `div` 2))

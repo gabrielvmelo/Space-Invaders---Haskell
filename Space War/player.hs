@@ -1,55 +1,69 @@
 module Player(
-    playerCreate,
-    movePlayerRight,
-    movePlayerLeft,
-    movePlayerUp,
-    movePlayerDown
-    --playerCycle
+    createPlayer,
+    createPlayerBullet,
+    moveRightPlayer,
+    moveLeftPlayer,
+    moveUpPlayer,
+    moveDownPlayer,
+    shootPlayer
 ) where
 
+import Graphics.Rendering.OpenGL (GLdouble)
 import Graphics.UI.Fungen
-import Screen
 import Textures
+import Screen
 import Types
 
-startPosition = (fromIntegral(0), fromIntegral((snd windowResolution) `div` 2))
+createPlayer :: SIObject
+createPlayer =
+  let sprite = Tex texturePlayerSize texturePlayerIndex
+  in object "player" sprite False (widthGL/2, 100) (0, 0) ()
 
-playerCreate :: SpaceWarObject
-playerCreate = let sprite = Tex texturePlayerSize texturePlayerIndex
-               in object "player" sprite False startPosition (0, 0) ()
+createPlayerBullet :: GLdouble -> GLdouble -> SIObject
+createPlayerBullet x y =
+  let sprite = Tex texturePlayerBulletSize texturePlayerBulletIndex
+  in object "playerBullet" sprite False (x, y) (0, 30) ()
 
-movePlayerRight :: Modifiers -> Position -> SpaceWarAction ()
-movePlayerRight _ _ = do
+moveRightPlayer :: Modifiers -> Position -> SIAction ()
+moveRightPlayer _ _ = do
+  obj <- findObject "player" "playerGroup"
+  (px, py) <- getObjectPosition obj
+  (sx, _ ) <- getObjectSize obj
+  if(px + (sx/2) + 7 <= widthGL)
+    then (setObjectPosition ((px + 7), py) obj)
+    else (setObjectPosition ((widthGL - (sx/2)), py) obj)
+
+moveLeftPlayer :: Modifiers -> Position -> SIAction ()
+moveLeftPlayer _ _ = do
+  obj <- findObject "player" "playerGroup"
+  (px, py) <- getObjectPosition obj
+  (sx, _ ) <- getObjectSize obj
+  if(px - (sx/2) - 7 >= 0)
+    then (setObjectPosition ((px - 7), py) obj)
+    else (setObjectPosition (sx/2, py) obj)
+
+moveUpPlayer :: Modifiers -> Position -> SIAction ()
+moveUpPlayer _ _ = do
     obj <- findObject "player" "playerGroup"
     (px, py) <- getObjectPosition obj
-    (sx, sy) <- getObjectSize obj
-    if (px + (sx/2) < width)
-        then (setObjectPosition ((px + 7), py) obj)
-        else (setObjectPosition (width - (sx/2), py) obj)
-
-movePlayerLeft :: Modifiers -> Position -> SpaceWarAction ()
-movePlayerLeft _ _ = do
-    obj <- findObject "player" "playerGroup"
-    (px, py) <- getObjectPosition obj
-    (sx, sy) <- getObjectSize obj
-    if(px - (sx/2) > 0)
-        then (setObjectPosition ((px - 7), py) obj)
-        else (setObjectPosition (width + (sx/2), py) obj)
-
-movePlayerUp :: Modifiers -> Position -> SpaceWarAction ()
-movePlayerUp _ _ = do
-    obj <- findObject "player" "playerGroup"
-    (px, py) <- getObjectPosition obj
-    (sx, sy) <- getObjectSize obj
-    if(py + (sy/2) < height)
+    ( _, sy) <- getObjectSize obj
+    if(py + (sy/2) < heightGL)
         then (setObjectPosition (px, (py + 7)) obj)
-        else (setObjectPosition (px, height - (sy/2)) obj)
+        else (setObjectPosition (px, heightGL - (sy/2)) obj)
 
-movePlayerDown :: Modifiers -> Position -> SpaceWarAction ()
-movePlayerDown _ _ = do
+moveDownPlayer :: Modifiers -> Position -> SIAction ()
+moveDownPlayer _ _ = do
     obj <- findObject "player" "playerGroup"
     (px, py) <- getObjectPosition obj
-    (sx, sy) <- getObjectSize obj
-    if(py - (sy/2) > 0)
+    ( _, sy) <- getObjectSize obj
+    if(py - (sy/2) - 7 > 0)
         then (setObjectPosition (px, (py - 7)) obj)
-        else (setObjectPosition (px, (height + (sy/2))) obj)
+        else (setObjectPosition (px, (sy/2)) obj)
+
+shootPlayer :: Modifiers -> Position -> SIAction ()
+shootPlayer _ _ = do
+  obj <- findObject "player" "playerGroup"
+  (px, py) <- getObjectPosition obj
+  let obj = (createPlayerBullet (px) (py))
+  addObjectsToGroup [obj] "playerBulletGroup"
+  drawObject obj

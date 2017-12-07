@@ -1,48 +1,52 @@
 module Textures(
     bmpList,
-    texturePlayerSize, texturePlayerIndex,
     textureBackgroundSize, textureBackgroundIndex,
-    textureBackground2Size, textureBackground2Index,
-    textureObstacleSize, textureObstacleIndex,
-    textureBulletSize, textureBulletIndex
+    texturePlayerSize, texturePlayerIndex,
+    textureInvaderSize, textureInvaderIndex,
+    texturePlayerBulletSize, texturePlayerBulletIndex,
+    textureInvaderBulletSize, textureInvaderBulletIndex
 ) where
 
 import Graphics.UI.Fungen
 
-bmpList = [("Sprites/spaceship.bmp", magenta),
-            ("Sprites/background1.bmp", Nothing),
-            ("Sprites/background2.bmp", Nothing),
-            ("Sprites/obstacle.bmp", magenta)]
-
-texturePlayerIndex :: Int
-texturePlayerIndex = 0
+bmpList = [("sprites/background.bmp", Nothing),
+           ("sprites/player.bmp", magenta),
+           ("sprites/invader.bmp", magenta), 
+           ("sprites/playerBullet.bmp", black),
+           ("sprites/invaderBullet.bmp", black)]
 
 textureBackgroundIndex :: Int
-textureBackgroundIndex = 1
+textureBackgroundIndex = 0
 
-textureBackground2Index :: Int
-textureBackground2Index = 2
+texturePlayerIndex :: Int
+texturePlayerIndex = 1
 
-textureObstacleIndex :: Int
-textureObstacleIndex = 3
+textureInvaderIndex :: Int
+textureInvaderIndex = 2
 
-textureBulletIndex :: Int
-textureBulletIndex = 4
+texturePlayerBulletIndex :: Int
+texturePlayerBulletIndex = 3
+
+textureInvaderBulletIndex :: Int
+textureInvaderBulletIndex = 4
 
 textureBackgroundSize :: (Double, Double)
-textureBackgroundSize = (800, 800)
-
-textureBackground2Size :: (Double, Double)
-textureBackground2Size = (800, 800)
-
-textureObstacleSize :: (Double, Double)
-textureObstacleSize = (500, 443)
+textureBackgroundSize = (345, 600)
 
 texturePlayerSize :: (Double, Double)
-texturePlayerSize = (430, 486)
+texturePlayerSize = (50, 50)
 
-textureBulletSize :: (Double, Double)
-textureBulletSize = (3, 3)
+textureInvaderSize :: (Double, Double)
+textureInvaderSize = (50, 50)
+
+texturePlayerBulletSize :: (Double, Double)
+texturePlayerBulletSize = (3, 6)
+
+textureInvaderBulletSize :: (Double, Double)
+textureInvaderBulletSize = (3, 6)
 
 magenta :: InvList
 magenta = Just [(255, 0, 255)]
+
+black :: InvList
+black = Just [(0,0,0)]
